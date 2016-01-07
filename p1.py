@@ -19,22 +19,22 @@ def dijkstras_shortest_path(initial_position, destination, graph, adj):
     """
     pq = []
     dist = {initial_position: 0}
-    prev = {}
+    prev = {initial_position: None}
     heappush(pq,(0,initial_position))
     while pq:
-        dist,cord = heappop(pq)
-        if (cord == dest):
+        d,cord = heappop(pq)
+        if (cord == destination):
             break
-        for x,weight in navigation_edges(graph,cord)
-            alt = dist + weight
-            if alt < dist.get(x,alt+1)
+        for x,weight in navigation_edges(graph,cord):
+            alt = d + weight
+            if alt < dist.get(x,alt+1):
                 dist[x] = alt
                 prev[x] = cord
                 heappush(pq,(dist[x],x))
     result = []
-    curr = dest
+    curr = destination
     while curr in prev:
-        result.prepend(curr)
+        result.insert(0, curr)
         curr = prev[curr] 
     return result
 
@@ -51,7 +51,20 @@ def dijkstras_shortest_path_to_all(initial_position, graph, adj):
     Returns:
         A dictionary, mapping destination cells to the cost of a path from the initial_position.
     """
-    pass
+    pq = []
+    dist = {initial_position: 0}
+    prev = {initial_position: None}
+    heappush(pq,(0,initial_position))
+    while pq:
+        d,cord = heappop(pq)
+        for x,weight in navigation_edges(graph,cord):
+            alt = d + weight
+            if alt < dist.get(x,alt+1):
+                dist[x] = alt
+                prev[x] = cord
+                heappush(pq,(dist[x],x))
+    return dist
+
 
 
 def navigation_edges(level, cell):
@@ -140,10 +153,10 @@ def cost_to_all_cells(filename, src_waypoint, output_filename):
 
 
 if __name__ == '__main__':
-    filename, src_waypoint, dst_waypoint = 'example.txt', 'a','e'
+    filename, src_waypoint, dst_waypoint = 'my_maze.txt', 'a','e'
 
     # Use this function call to find the route between two waypoints.
     test_route(filename, src_waypoint, dst_waypoint)
 
     # Use this function to calculate the cost to all reachable cells from an origin point.
-    cost_to_all_cells(filename, src_waypoint, 'my_costs.csv')
+    cost_to_all_cells(filename, src_waypoint, 'my_maze_costs.csv')
