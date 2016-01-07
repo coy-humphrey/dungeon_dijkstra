@@ -17,7 +17,27 @@ def dijkstras_shortest_path(initial_position, destination, graph, adj):
         Otherwise, return None.
 
     """
-    pass
+    pq = []
+    dist = {initial_position: 0}
+    prev = {}
+    heappush(pq,(0,initial_position))
+    while pq:
+        dist,cord = heappop(pq)
+        if (cord == dest):
+            break
+        for x,weight in navigation_edges(graph,cord)
+            alt = dist + weight
+            if alt < dist.get(x,alt+1)
+                dist[x] = alt
+                prev[x] = cord
+                heappush(pq,(dist[x],x))
+    result = []
+    curr = dest
+    while curr in prev:
+        result.prepend(curr)
+        curr = prev[curr] 
+    return result
+
 
 
 def dijkstras_shortest_path_to_all(initial_position, graph, adj):
@@ -51,8 +71,23 @@ def navigation_edges(level, cell):
              ((1,1), 1.4142135623730951),
              ... ]
     """
-    pass #hello
-    
+    def getWeight(src, dest):
+        x,y = src
+        i,j = dest
+        weight = 0
+        spaces = level['spaces']
+        if not((x==y) or (y==j)):
+            weight = .5*sqrt(2)*spaces[src]+.5*sqrt(2)*spaces[dest]
+        else:
+            weight = .5*spaces[src]+.5*spaces[dest]
+        return weight
+
+
+    x,y = cell
+    spaces = level['spaces']
+    modifiers = [(i,j) for i in range(-1, 2) for j in range(-1,2) if not (i == 0 and j ==0)]
+    validCoords = [(x+i, y+j) for i,j in modifiers if (x+i, y+j) in spaces]
+    return [(t, getWeight(cell, t)) for t in validCoords]
 
 
 def test_route(filename, src_waypoint, dst_waypoint):
