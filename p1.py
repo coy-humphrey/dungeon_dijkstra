@@ -25,7 +25,7 @@ def dijkstras_shortest_path(initial_position, destination, graph, adj):
         d,cord = heappop(pq)
         if (cord == destination):
             break
-        for x,weight in navigation_edges(graph,cord):
+        for x,weight in adj(graph,cord):
             alt = d + weight
             if alt < dist.get(x,alt+1):
                 dist[x] = alt
@@ -57,7 +57,7 @@ def dijkstras_shortest_path_to_all(initial_position, graph, adj):
     heappush(pq,(0,initial_position))
     while pq:
         d,cord = heappop(pq)
-        for x,weight in navigation_edges(graph,cord):
+        for x,weight in adj(graph,cord):
             alt = d + weight
             if alt < dist.get(x,alt+1):
                 dist[x] = alt
@@ -153,7 +153,7 @@ def cost_to_all_cells(filename, src_waypoint, output_filename):
 
 
 if __name__ == '__main__':
-    filename, src_waypoint, dst_waypoint = 'my_maze.txt', 'a','e'
+    filename, src_waypoint, dst_waypoint = 'example.txt', 'a','e'
 
     # Use this function call to find the route between two waypoints.
     test_route(filename, src_waypoint, dst_waypoint)
