@@ -89,7 +89,7 @@ def navigation_edges(level, cell):
         i,j = dest
         weight = 0
         spaces = level['spaces']
-        if not((x==y) or (y==j)):
+        if not((x==i) or (y==j)):
             weight = .5*sqrt(2)*spaces[src]+.5*sqrt(2)*spaces[dest]
         else:
             weight = .5*spaces[src]+.5*spaces[dest]
