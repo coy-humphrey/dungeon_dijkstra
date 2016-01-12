@@ -1,3 +1,5 @@
+# Authors: Coy Humphrey and Jake Preston
+
 from p1_support import load_level, show_level, save_level_costs
 from math import inf, sqrt
 from heapq import heappop, heappush
@@ -85,21 +87,36 @@ def navigation_edges(level, cell):
              ... ]
     """
     def getWeight(src, dest):
+        """ Given two adjacent cells, gives the cost of navigating the edge between them
+
+        Args:
+            src: The source cell
+            dest: The destination cell adjacent to src
+
+        Returns:
+            A floating point number representing the cost to travel from src to dest
+
+        E.g. 1.4142135623730951
+        """
+        # pull x and y coordinates from both src and dest
         x,y = src
         i,j = dest
         weight = 0
         spaces = level['spaces']
+        # If neither x nor y remain the same (both change) we're moving diagonally
         if not((x==i) or (y==j)):
             weight = .5*sqrt(2)*spaces[src]+.5*sqrt(2)*spaces[dest]
         else:
             weight = .5*spaces[src]+.5*spaces[dest]
         return weight
 
-
     x,y = cell
     spaces = level['spaces']
+    # Generates a list of tuples [(-1,-1), (-1,0), (0,1)...] that will be used to get the 8 adjacent cells
     modifiers = [(i,j) for i in range(-1, 2) for j in range(-1,2) if not (i == 0 and j ==0)]
+    # Uses the tuples from modifier to get the 8 adjacent cells. Filters out invalid coordinates.
     validCoords = [(x+i, y+j) for i,j in modifiers if (x+i, y+j) in spaces]
+    # Return a list of tuples in the form [(adjacentCell, weightTocell)]
     return [(t, getWeight(cell, t)) for t in validCoords]
 
 
@@ -153,10 +170,10 @@ def cost_to_all_cells(filename, src_waypoint, output_filename):
 
 
 if __name__ == '__main__':
-    filename, src_waypoint, dst_waypoint = 'example.txt', 'a','e'
+    filename, src_waypoint, dst_waypoint = 'my_maze.txt', 'a','d'
 
     # Use this function call to find the route between two waypoints.
-    test_route(filename, src_waypoint, dst_waypoint)
+    #test_route(filename, src_waypoint, dst_waypoint)
 
     # Use this function to calculate the cost to all reachable cells from an origin point.
     cost_to_all_cells(filename, src_waypoint, 'my_maze_costs.csv')
